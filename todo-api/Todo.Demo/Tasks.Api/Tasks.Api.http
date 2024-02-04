@@ -1,0 +1,38 @@
+@Tasks.Api_HostAddress = http://localhost:5000
+
+GET {{Tasks.Api_HostAddress}}/tasks/
+Accept: application/json
+
+###
+
+POST {{Tasks.Api_HostAddress}}/tasks/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Task 1",
+  "day": "tomorrow"
+}
+
+###
+
+GET {{Tasks.Api_HostAddress}}/tasks/6
+Accept: application/json
+
+###
+
+PUT {{Tasks.Api_HostAddress}}/tasks/6
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Task 2",
+  "day": "today"
+}
+
+###
+
+DELETE {{Tasks.Api_HostAddress}}/tasks/4
+Accept: application/json
+
+###

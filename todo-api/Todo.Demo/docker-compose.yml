@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+  tasks.api:
+    image: ${DOCKER_REGISTRY-}tasksapi
+    container_name: tasks.api
+    build:
+      context: .
+      dockerfile: Tasks.Api/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+
+  tasks.database:
+    image: postgres:latest
+    container_name: tasks.database
+    environment:
+      - POSTGRES_DB=tasksdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/tasks-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  tasks.cache:
+    image: redis:latest
+    container_name: tasks.cache
+    restart: always
+    ports:
+      - '6379:6379'
