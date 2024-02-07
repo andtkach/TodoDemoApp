@@ -19,9 +19,16 @@ mongoose
     console.error("Error connecting to MongoDB", err);
   });
 
-app.use(cors()); // Use CORS middleware to allow requests from the frontend
+  var corsOptions = {
+    credentials: true,
+    origin: '*',
+    optionsSuccessStatus: 200,
+  }
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
-app.use("/api/auth", authRoutes); // All the routes defined in auth.js will be prefixed with /api/auth
+app.use("/api/auth", authRoutes); 
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
