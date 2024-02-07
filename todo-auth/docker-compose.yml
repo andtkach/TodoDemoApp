@@ -1,5 +1,4 @@
-version: "3.7"
-
+version: "3.9"
 services:
   
   mongodb:
@@ -16,9 +15,24 @@ services:
       - ./data-mongo-volume:/data/db
     networks:
       - devnet
-  
+
+  todo-auth:
+    build:
+      context: .
+    environment:
+      MONGODB_URI: mongodb://admin:password@mongodb:27018
+      JWT_SECRET: 44B3703534634154A02682BCD2B23CE9A6DC304957B34BB3A6A1EA17F020C2A3
+    depends_on:
+      - mongodb
+    ports:
+      - '3031:8080'
+    networks:
+      - devnet
+        
+volumes:
+  todo-auth-db:
+
 networks:
   devnet:
     driver: bridge
     name: devnet_network
-

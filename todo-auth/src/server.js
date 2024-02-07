@@ -6,13 +6,11 @@ const cors = require("cors"); // Import the CORS middleware
 require("dotenv").config();
 
 const app = express();
-const PORT = 3031;
+const PORT = 8080;
 
 mongoose
   .connect(process.env.MONGODB_URI, {
     dbName: 'todo-auth-db',
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   })
   .then(() => {
     console.log("Connected to MongoDB");

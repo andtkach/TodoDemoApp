@@ -5,6 +5,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 
 router.post("/login", async (req, res) => {
+  console.log('login called');
   const { username, password } = req.body;
   const user = await User.findOne({ username });
 
@@ -17,15 +18,17 @@ router.post("/login", async (req, res) => {
 
   const token = jwt.sign({ 
     sub: user.id, 
+    userId: user.id,
     username: user.username,
     aud: "todo-app",
     iss: "https://todo-app-iam",
-  }, process.env.JWT_SECRET);
+  }, process.env.JWT_SECRET, {expiresIn: '30d'});
 
   res.send({ userId: user.id, token });
 });
 
 router.post("/register", async (req, res) => {
+  console.log('register called');
   try {
     const { username, password } = req.body;
 

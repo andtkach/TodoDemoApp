@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Tasks.Api.Contracts;
 using Tasks.Api.Database;
 using Tasks.Api.Entities;
+using Tasks.Api.Services;
 
 namespace Tasks.Api.Endpoints;
 
@@ -15,27 +16,31 @@ public static class TaskEndpoints
             CreateTodoItemRequest request,
             ApplicationDbContext context,
             IMapper mapper,
+            ILoggedInUserService loggedInUserService,
             CancellationToken ct) =>
         {
             var item = mapper.Map<TodoItem>(request);
+            item.Owner = loggedInUserService.UserId;
             context.Add(item);
-
             await context.SaveChangesAsync(ct);
-
             return Results.Ok(item);
-        });
+        })
+        .RequireAuthorization();
 
         app.MapGet("tasks", async (
             ApplicationDbContext context,
+            ILoggedInUserService loggedInUserService,
             CancellationToken ct,
             IDistributedCache cache,
             int page = 1,
             int pageSize = 10) =>
         {
-            var items = await cache.GetAsync($"{Constants.CacheTasksKey}-{page}-{pageSize}",
+            var userId = loggedInUserService.UserId;
+            var items = await cache.GetAsync($"{Constants.CacheTasksKey}-{userId}-{page}-{pageSize}",
                 async token =>
                 {
                     var items = await context.TodoItems
+                        .Where(p => p.Owner == userId)
                         .AsNoTracking()
                         .Skip((page - 1) * pageSize)
                         .Take(pageSize)
@@ -46,20 +51,23 @@ public static class TaskEndpoints
                 ct);
             
             return Results.Ok(items);
-        });
+        })
+        .RequireAuthorization();
 
         app.MapGet("tasks/{id}", async (
             int id,
             ApplicationDbContext context,
+            ILoggedInUserService loggedInUserService,
             IDistributedCache cache,
             CancellationToken ct) =>
         {
-            var item = await cache.GetAsync($"{Constants.CacheTaskKey}-{id}",
+            var userId = loggedInUserService.UserId;
+            var item = await cache.GetAsync($"{Constants.CacheTaskKey}-{userId}-{id}",
                 async token =>
                 {
                     var item = await context.TodoItems
                         .AsNoTracking()
-                        .FirstOrDefaultAsync(p => p.Id == id, token);
+                        .FirstOrDefaultAsync(p => p.Id == id && p.Owner == userId, token);
 
                     return item;
                 },
@@ -67,17 +75,20 @@ public static class TaskEndpoints
                 ct);
 
             return item is null ? Results.NotFound() : Results.Ok(item);
-        });
+        })
+        .RequireAuthorization();
 
         app.MapPut("tasks/{id}", async (
             int id,
             UpdateTodoItemRequest request,
             ApplicationDbContext context,
             IDistributedCache cache,
+            ILoggedInUserService loggedInUserService,
             CancellationToken ct) =>
         {
+            var userId = loggedInUserService.UserId;
             var item = await context.TodoItems
-                .FirstOrDefaultAsync(p => p.Id == id, ct);
+                .FirstOrDefaultAsync(p => p.Id == id && p.Owner == userId, ct);
 
             if (item is null)
             {
@@ -89,19 +100,22 @@ public static class TaskEndpoints
 
             await context.SaveChangesAsync(ct);
 
-            await cache.RemoveAsync($"{Constants.CacheTaskKey}-{id}", ct);
+            await cache.RemoveAsync($"{Constants.CacheTaskKey}-{userId}-{id}", ct);
 
             return Results.NoContent();
-        });
+        })
+        .RequireAuthorization();
 
         app.MapDelete("tasks/{id}", async (
             int id,
             ApplicationDbContext context,
             IDistributedCache cache,
+            ILoggedInUserService loggedInUserService,
             CancellationToken ct) =>
         {
+            var userId = loggedInUserService.UserId;
             var item = await context.TodoItems
-                .FirstOrDefaultAsync(p => p.Id == id, ct);
+                .FirstOrDefaultAsync(p => p.Id == id && p.Owner == userId, ct);
 
             if (item is null)
             {
@@ -111,9 +125,10 @@ public static class TaskEndpoints
             context.Remove(item);
 
             await context.SaveChangesAsync(ct);
-            await cache.RemoveAsync($"{Constants.CacheTaskKey}-{id}", ct);
+            await cache.RemoveAsync($"{Constants.CacheTaskKey}-{userId}-{id}", ct);
 
             return Results.NoContent();
-        });
+        })
+        .RequireAuthorization();
     }
 }

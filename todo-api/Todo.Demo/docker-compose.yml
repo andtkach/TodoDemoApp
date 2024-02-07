@@ -4,6 +4,9 @@ services:
   tasks.api:
     image: ${DOCKER_REGISTRY-}tasksapi
     container_name: tasks.api
+    depends_on:
+      - tasks.database
+      - tasks.cache
     build:
       context: .
       dockerfile: Tasks.Api/Dockerfile

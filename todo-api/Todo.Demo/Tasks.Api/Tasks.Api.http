@@ -1,13 +1,16 @@
 @Tasks.Api_HostAddress = http://localhost:5000
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWMzNDk4NTdiZDdkNzFlYzA2MDE1MGQiLCJ1c2VybmFtZSI6ImFuZHJpaSIsImF1ZCI6InRvZG8tYXBwIiwiaXNzIjoiaHR0cHM6Ly90b2RvLWFwcC1pYW0iLCJpYXQiOjE3MDczMDg3MTUsImV4cCI6MTcwOTkwMDcxNX0.J5hvChB0NuwRz71PO8TDAPyhUgGnsmIAuD01f8v5Fzo
 
 GET {{Tasks.Api_HostAddress}}/tasks/
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
 POST {{Tasks.Api_HostAddress}}/tasks/
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Task 1",
@@ -18,12 +21,14 @@ Content-Type: application/json
 
 GET {{Tasks.Api_HostAddress}}/tasks/6
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
 
 PUT {{Tasks.Api_HostAddress}}/tasks/6
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Task 2",
@@ -34,5 +39,6 @@ Content-Type: application/json
 
 DELETE {{Tasks.Api_HostAddress}}/tasks/4
 Accept: application/json
+Authorization: Bearer {{token}}
 
 ###
