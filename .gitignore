@@ -398,3 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 doc/.$TodoDemoApp.drawio.bkp
+
+todo-auth/auth-db/data-mongo-volume/
