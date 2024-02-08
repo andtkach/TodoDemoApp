@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +41,10 @@ const Login = () => {
 
   return (
     <div className="container">
-      <h3>Login</h3>
+      <div className="header">
+        <h3>Login</h3>
+        <Link to="/register">Register</Link>
+      </div>
       
       <form className="add-form" onSubmit={handleSubmit}>
         <div className="form-control">        
@@ -63,6 +67,7 @@ const Login = () => {
         {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}{" "}
 
         <button className="btn btn-block" type="submit">Login</button>
+        
       </form>
     </div>
   );

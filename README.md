@@ -1,1 +1,3 @@
 # TodoDemoApp
+
+docker compose up

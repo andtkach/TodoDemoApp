@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Link} from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +31,11 @@ const Registration = () => {
 
   return (
     <div className="container">
-      <h3>Register</h3>
+      <div className="header">
+        <h3>Register</h3>
+        <Link to="/login">Login</Link>
+      </div>
+      
       <form className="add-form" onSubmit={handleSubmit}>
         <div className="form-control">
           <input
@@ -52,7 +57,7 @@ const Registration = () => {
         </div>
 
         <button className="btn btn-block" type="submit">Register</button>
-
+        
       </form>
       {message && <p>{message}</p>}
     </div>

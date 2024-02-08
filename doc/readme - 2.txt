@@ -23,3 +23,5 @@ If needed set ports in Congiguration of AppService
 WEBSITES_PORT=8080
 PORT=8080
 
+Separate applications
+Public api urls
