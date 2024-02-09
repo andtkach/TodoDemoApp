@@ -1,43 +1,25 @@
-DemoTodoApp
+DemoTodoApp. Part 2
 
 Add authentication and IAM service
+Add BFF
+Add message processing with AI
 
 Code: https://github.com/andtkach/TodoDemoApp
 Demo: https://demo-todo-app-from-containers.azurewebsites.net/
 
-## Build container for app
-Show Dockerfile for App
-cd \TodoDemoApp\todo-auth
-docker build -t andreytkach/demo-todo-auth .
-docker run --name todo-auth -p 3031:3031 -d andreytkach/demo-todo-auth
-docker push andreytkach/demo-todo-auth
-
+Build and run complete composition locally
+Publish to Docker Hub
 Kill infrastructure in Docker Desktop
-
-## Crate two Azure app servies from containers
-Create resource group: demo-todo-app-rg
-Create app service for API: demo-todo-auth-from-containers
-andreytkach/demo-todo-auth
-
-#BFF
-Create app service for API: demo-todo-bff-from-containers
-andreytkach/demo-todo-bff
-
-# Processor
-Create app service for API: demo-todo-proc-from-containers
-andreytkach/demo-todo-proc
-
-If needed set ports in Congiguration of AppService
-WEBSITES_PORT=8080
-PORT=8080
-
-Separate applications
-Public api urls
+Azure deployment
 
 
-Demo:
+
+TEST DATA
+
+1.
 Rule the world with artificial intelligence
 Now
 
+2.
 Humanity does not behave intelligently enough and therefore cannot take care of itself
 Tomorrow

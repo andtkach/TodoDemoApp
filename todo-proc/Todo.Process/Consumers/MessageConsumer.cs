@@ -29,6 +29,7 @@ namespace Todo.Process.Consumers
             try
             {
                 await UpdateDatabase(id);
+                _logger.LogInformation("Message processed: {Id}", id);
             }
             catch (Exception e)
             {
@@ -64,7 +65,16 @@ namespace Todo.Process.Consumers
             };
 
             var response = await httpClient.SendAsync(httpRequestMessage);
-            if (!response.IsSuccessStatusCode) return string.Empty;
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogError("Error while getting audio: {StatusCode}", response.StatusCode);
+                var rawResponse =  await response.Content.ReadAsStringAsync();
+                _logger.LogInformation("Error raw response: {Response}", rawResponse);
+                return string.Empty;
+            }
+
+            _logger.LogInformation("Audio received");
+
             var byteArray = await response.Content.ReadAsByteArrayAsync();
             return Convert.ToBase64String(byteArray);
         }

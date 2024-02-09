@@ -17,7 +17,8 @@ namespace Todo.Process.Controllers
         [HttpGet(Name = "Info")]
         public IActionResult Get()
         {
-            return Ok(new { api = "todo-process", version = "0.1"});
+            _logger.LogInformation("Info called");
+            return Ok(new { api = "todo-proc", version = "0.2"});
         }
     }
 }
