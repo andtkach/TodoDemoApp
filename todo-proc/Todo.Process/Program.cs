@@ -1,5 +1,8 @@
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using Todo.Process.Consumers;
+using Todo.Process.Database;
 using Todo.Process.Mapper;
 
 namespace Todo.Process
@@ -35,7 +38,23 @@ namespace Todo.Process
                     configurator.ConfigureEndpoints(context);
                 });
             });
+
+            builder.Services.AddDbContext<ApplicationDbContext>(
+                options => options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+
+            builder.Services.AddHttpClient();
+
+            var oaiKey = builder.Configuration["OpenAI:Key"];
+            Console.WriteLine($"OpenAI Key: {oaiKey}");
             
+            builder.Services.AddHttpClient("OpenAI", httpClient =>
+            {
+                httpClient.BaseAddress = new Uri(builder.Configuration["OpenAI:Url"] ?? throw new ConfigurationException("OpenAI url is not defined"));
+
+                httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                httpClient.DefaultRequestHeaders.Add(HeaderNames.Authorization, $"Bearer {oaiKey}");
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

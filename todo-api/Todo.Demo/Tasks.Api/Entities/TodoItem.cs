@@ -9,4 +9,5 @@ public sealed class TodoItem: AuditableEntity
     public string Day { get; set; } = string.Empty;
 
     public string Owner { get; set; } = string.Empty;
+    public string Audio { get; set; } = string.Empty;
 }

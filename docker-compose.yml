@@ -38,9 +38,23 @@ services:
       - todo-data-db
       - todo-data-cache
       - todo-auth-db
+      - todo-msg
     ports:
       - "8080:8080"
       - "8081:8081"
+    networks:
+      - todonet
+      
+  todo-proc:
+    image: andreytkach/demo-todo-proc
+    container_name: todo-proc
+    hostname: todo-proc
+    depends_on:
+      - todo-data-db
+      - todo-msg
+    ports:
+      - "8070:8080"
+      - "8071:8081"
     networks:
       - todonet
       
@@ -101,7 +115,21 @@ services:
     networks:
       - todonet
     command: ["sleep","infinity"]
-      
+
+  todo-msg:
+    image: rabbitmq:management
+    container_name: todo-msg
+    ports:
+      - '5672:5672'
+    volumes:
+      - ./containers-data/data-queue/data/:/var/lib/rabbitmq
+      - ./containers-data/data-queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - todonet
+    
 networks:
   todonet:
     name: todonet

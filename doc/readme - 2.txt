@@ -23,9 +23,21 @@ andreytkach/demo-todo-auth
 Create app service for API: demo-todo-bff-from-containers
 andreytkach/demo-todo-bff
 
+# Processor
+Create app service for API: demo-todo-proc-from-containers
+andreytkach/demo-todo-proc
+
 If needed set ports in Congiguration of AppService
 WEBSITES_PORT=8080
 PORT=8080
 
 Separate applications
 Public api urls
+
+
+Demo:
+Rule the world with artificial intelligence
+Now
+
+Humanity does not behave intelligently enough and therefore cannot take care of itself
+Tomorrow

@@ -52,5 +52,16 @@ cd ..
 echo End build app
 echo ---------------------------------------------------
 
+echo ---------------------------------------------------
+echo Build proc
+
+cd todo-proc
+
+docker build -f Todo.Process/Dockerfile -t andreytkach/demo-todo-proc .
+cd ..
+
+echo End build proc
+echo ---------------------------------------------------
+
 
 echo DONE
