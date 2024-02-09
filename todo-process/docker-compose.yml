@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  todo.process:
+    image: ${DOCKER_REGISTRY-}todoprocess
+    build:
+      context: .
+      dockerfile: Todo.Process/Dockerfile

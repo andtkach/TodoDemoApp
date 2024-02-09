@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Threading.Channels;
 using Tasks.Api.Contracts;
 using Tasks.Api.Database;
 using Tasks.Api.Entities;
 using Tasks.Api.Services;
+using Tasks.Common.Message;
 
 namespace Tasks.Api.Endpoints;
 
@@ -17,12 +19,15 @@ public static class TaskEndpoints
             ApplicationDbContext context,
             IMapper mapper,
             ILoggedInUserService loggedInUserService,
+            Channel<MessageTask> channel,
             CancellationToken ct) =>
         {
             var item = mapper.Map<TodoItem>(request);
             item.Owner = loggedInUserService.UserId;
             context.Add(item);
             await context.SaveChangesAsync(ct);
+            var message = new MessageTask { Id = item.Id };
+            await channel.Writer.WriteAsync(message, ct);
             return Results.Ok(item);
         })
         .RequireAuthorization();
@@ -84,6 +89,7 @@ public static class TaskEndpoints
             ApplicationDbContext context,
             IDistributedCache cache,
             ILoggedInUserService loggedInUserService,
+            Channel<MessageTask> channel,
             CancellationToken ct) =>
         {
             var userId = loggedInUserService.UserId;
@@ -99,6 +105,9 @@ public static class TaskEndpoints
             item.Day = request.Day;
 
             await context.SaveChangesAsync(ct);
+            
+            var message = new MessageTask { Id = item.Id };
+            await channel.Writer.WriteAsync(message, ct);
 
             await cache.RemoveAsync($"{Constants.CacheTaskKey}-{userId}-{id}", ct);
 

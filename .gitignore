@@ -399,7 +399,7 @@ FodyWeavers.xsd
 
 doc/.$TodoDemoApp.drawio.bkp
 
-todo-auth/auth-db/data-mongo-volume/
-.containers/tasks-db
-data-mongo-volume
-todo-api/Todo.Demo/.containers/tasks-db
+containers-data/data-mongo/
+containers-data/data-postgres/
+
+todo-api/Todo.Demo/containers-data/

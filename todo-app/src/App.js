@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
-import Registration from "./components/Registration";
+import Register from "./components/Register";
 import Todo from "./components/Todo";
 import { AuthProvider } from "./components/AuthContext";
 
@@ -18,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/register" element={<Registration />} />{" "}
+          <Route path="/register" element={<Register />} />{" "}
           <Route path="/todo" element={<Todo />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

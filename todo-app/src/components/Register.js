@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Registration = () => {
+const Register = () => {
   const registrationUrl = process.env.REACT_APP_TODOAUTHURL;
 
   const [username, setUsername] = useState("");
@@ -15,14 +15,17 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${registrationUrl}api/auth/register`, {      
+      
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+      
+      const response = await axios.post(`${registrationUrl}auth/register`, {      
         username,
         password,
       });
       setMessage(response.data.message);
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
-      navigate("/todo");
+      
+      navigate("/login");
     } catch (error) {
       console.error("Registration failed:", error.response.data.error);
       setMessage(error.response.data.error);
@@ -64,4 +67,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default Register;

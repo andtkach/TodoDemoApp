@@ -19,6 +19,10 @@ Create resource group: demo-todo-app-rg
 Create app service for API: demo-todo-auth-from-containers
 andreytkach/demo-todo-auth
 
+#BFF
+Create app service for API: demo-todo-bff-from-containers
+andreytkach/demo-todo-bff
+
 If needed set ports in Congiguration of AppService
 WEBSITES_PORT=8080
 PORT=8080

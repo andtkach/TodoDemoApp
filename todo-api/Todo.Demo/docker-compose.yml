@@ -22,7 +22,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./.containers/tasks-db:/var/lib/postgresql/data
+      - ./containers-data/data-postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -32,3 +32,16 @@ services:
     restart: always
     ports:
       - '6379:6379'
+
+  tasks.message:
+    image: rabbitmq:management
+    container_name: tasks.message
+    ports:
+      - '5672:5672'
+    volumes:
+      - ./containers-data/data-queue/data/:/var/lib/rabbitmq
+      - ./containers-data/data-queue/log/:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    

@@ -2,6 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
+const infoRoutes = require("./routes/info");
 const cors = require("cors"); // Import the CORS middleware
 require("dotenv").config();
 
@@ -28,7 +29,8 @@ mongoose
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use("/api/auth", authRoutes); 
+app.use("/info", infoRoutes)
+app.use("/auth", authRoutes); 
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

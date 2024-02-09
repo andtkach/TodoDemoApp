@@ -28,6 +28,11 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\todo-common\Tasks.Common\Tasks.Common.csproj" />
   </ItemGroup>
 
 </Project>
