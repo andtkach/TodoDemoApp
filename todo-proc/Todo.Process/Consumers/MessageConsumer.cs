@@ -42,6 +42,7 @@ namespace Todo.Process.Consumers
             var task = await _context.TodoItems.FirstOrDefaultAsync(t => t.Id == id);
             if (task != null)
             {
+                _logger.LogInformation("Getting audio for task {Id} [{Name}]", id, task.Name);
                 task.Audio = await GetAudio(new InputModel()
                 {
                     Input = task.Name
